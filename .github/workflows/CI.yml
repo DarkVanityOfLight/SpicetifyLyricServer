@@ -1,0 +1,36 @@
+name: CI
+on: [push]
+jobs:
+  Lint:
+    name: Lint the source code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: mskelton/setup-yarn@v1.2.1
+      - name: Install dependencies
+        run: yarn install
+      - name: Lint
+        continue-on-error: true
+        run: yarn eslint -o dist/lint src/*
+      - name: Upload Lint results
+        uses: actions/upload-artifact@master
+        with:
+          name: LintResults
+          path: dist/lint
+  Compile:
+    name: Compile TS to JS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: mskelton/setup-yarn@v1.2.1
+      - name: Install dependencies
+        run: yarn install
+      - name: Compile
+        run: yarn tsc
+      - name: Upload build results
+        uses: actions/upload-artifact@master
+        with:
+          name: AdBlocker
+          path: dist/
