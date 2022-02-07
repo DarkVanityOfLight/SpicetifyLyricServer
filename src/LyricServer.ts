@@ -1,5 +1,3 @@
-
-
 type Word = {
     string: string
 }
@@ -9,9 +7,9 @@ type LyricLine = {
     words: Word[]
 }
 
-function getCurrentTrackId(Player: any){
+function getCurrentTrackId(){
 
-    const trackURI = Player.data.track.uri
+    const trackURI = Spicetify.Player.data.track.uri
     return getTrackId(trackURI)
 }
 
@@ -19,17 +17,18 @@ function getTrackId(trackURI: string){
     return trackURI.split(":")[2]
 }
 
-async function fetchLyrics(CosmosAsync: any, id: string){
+async function fetchLyrics(id: string){
 
     const baseURL = "hm://lyrics/v1/track/";
-    const resp = await CosmosAsync.get(baseURL + id);
+    const resp = await Spicetify.CosmosAsync.get(baseURL + id);
     const lyrics: LyricLine = resp.lines
 
     return lyrics
 }
 
-function onQueueChange(){
-    
+async function getCurrentTrackLyrics(){
+    const id = getCurrentTrackId();
+    return fetchLyrics(id);
 }
 
 (async function Main(){
