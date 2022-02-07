@@ -40,6 +40,8 @@ async function getCurrentTrackLyrics(){
         CosmosAsync,
     } = Spicetify; 
 
-    Spicetify.Player.origin._events.addListener("queue_update", onQueueChange);
-
+    Spicetify.Player.addEventListener("songchange", () => {
+       const currentLyrics = getCurrentTrackLyrics();
+    });
+}
 )();
