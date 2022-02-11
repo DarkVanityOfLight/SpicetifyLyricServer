@@ -7,6 +7,8 @@ type LyricLine = {
     words: Word[]
 }
 
+const recievers: string[] = ["http://localhost:5000"]
+
 function getCurrentTrackId(){
 
     const trackURI = Spicetify.Player.data.track.uri
@@ -20,10 +22,14 @@ function getTrackId(trackURI: string){
 async function fetchLyrics(id: string){
 
     const baseURL = "hm://lyrics/v1/track/";
-    const resp = await Spicetify.CosmosAsync.get(baseURL + id);
-    const lyrics: LyricLine = resp.lines
+    try{
+        const resp = await Spicetify!!.CosmosAsync.get(baseURL + id);
+        const lyrics: LyricLine[] = resp.lines
+        return lyrics
+    }catch (e){
+        return null
+    }
 
-    return lyrics
 }
 
 async function getCurrentTrackLyrics(){
@@ -31,17 +37,19 @@ async function getCurrentTrackLyrics(){
     return fetchLyrics(id);
 }
 
-(async function Main(){
-    // @ts-ignore
-    const {
-        URI,
-        Platform: { History },
-        Player,
-        CosmosAsync,
-    } = Spicetify; 
+async function sendLyrics(lyrics: LyricLine[] | null){
 
-    Spicetify.Player.addEventListener("songchange", () => {
-       const currentLyrics = getCurrentTrackLyrics();
+    for (let recvr of recievers){
+        Spicetify!!.CosmosAsync.post(recvr, {lyrics: lyrics})
+    }
+
+}
+
+function Main(){
+
+    Spicetify.Player.addEventListener("songchange", async () => {
+       const currentLyrics = await getCurrentTrackLyrics();
+       sendLyrics(currentLyrics)
     });
 }
-)();
+Main();
