@@ -11,6 +11,9 @@ const recievers: string[] = ["http://localhost:5000"]
 
 function getCurrentTrackId(){
 
+    if(Spicetify.Player.data.track == undefined){
+        return null
+    }
     const trackURI = Spicetify.Player.data.track.uri
     return getTrackId(trackURI)
 }
@@ -34,6 +37,9 @@ async function fetchLyrics(id: string){
 
 async function getCurrentTrackLyrics(){
     const id = getCurrentTrackId();
+    if (id == null){
+        return null
+    }
     return fetchLyrics(id);
 }
 
