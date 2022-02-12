@@ -22,6 +22,9 @@ function importSocketIo(){
     })
 }
 
+function openConnection(address: string){
+    const socket = io("ws://" + address)
+    return socket
 }
 
 function getCurrentTrackId(){
@@ -60,15 +63,20 @@ async function getCurrentTrackLyrics(){
 
 async function sendLyrics(lyrics: LyricLine[] | null){
 
+function initSockets(){
     for (let recvr of recievers){
-        Spicetify!!.CosmosAsync.post(recvr, {lyrics: lyrics})
+        if (!sockets.has(recvr)){
+            const sock = openConnection(recvr);
+            sockets.set(recvr, sock)
+        }
     }
-
 }
 
 async function Main(){
 
     await importSocketIo();
+
+    initSockets();
 
     Spicetify.Player.addEventListener("songchange", async () => {
        const currentLyrics = await getCurrentTrackLyrics();
