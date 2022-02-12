@@ -7,7 +7,7 @@ type LyricLine = {
     words: Word[]
 }
 
-const recievers: string[] = ["http://localhost:5000"]
+const recievers: string[] = ["localhost:5000"]
 
 function importSocketIo(){
 
