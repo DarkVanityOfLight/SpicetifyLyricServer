@@ -9,6 +9,17 @@ type LyricLine = {
 
 const recievers: string[] = ["http://localhost:5000"]
 
+function importSocketIo(){
+
+    const tag = document.createElement("script");
+    tag.src = "https://cdn.socket.io/4.4.1/socket.io.min.js";
+    tag.integritiy = "sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H";
+    tag.crossorigin = "anonymous";
+    document.body.appendChild(tag);
+    return tag
+
+}
+
 function getCurrentTrackId(){
 
     if(Spicetify.Player.data.track == undefined){
@@ -53,6 +64,8 @@ async function sendLyrics(lyrics: LyricLine[] | null){
 
 function Main(){
 
+    constsocketIOTag = importSocketIo();
+    
     Spicetify.Player.addEventListener("songchange", async () => {
        const currentLyrics = await getCurrentTrackLyrics();
        sendLyrics(currentLyrics)
