@@ -11,12 +11,15 @@ const recievers: string[] = ["localhost:5000"]
 
 function importSocketIo(){
 
-    const tag = document.createElement("script");
-    tag.src = "https://cdn.socket.io/4.4.1/socket.io.min.js";
-    tag.integritiy = "sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H";
-    tag.crossorigin = "anonymous";
-    document.body.appendChild(tag);
-    return tag
+    return new Promise(resolve => {
+        const tag = document.createElement("script");
+        tag.src = "https://cdn.socket.io/4.4.1/socket.io.min.js";
+        tag.integrity = "sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H";
+        tag.crossOrigin = "anonymous";
+        tag.onload = resolve
+        document.body.appendChild(tag);
+    })
+}
 
 }
 
@@ -62,10 +65,10 @@ async function sendLyrics(lyrics: LyricLine[] | null){
 
 }
 
-function Main(){
+async function Main(){
 
-    constsocketIOTag = importSocketIo();
-    
+    await importSocketIo();
+
     Spicetify.Player.addEventListener("songchange", async () => {
        const currentLyrics = await getCurrentTrackLyrics();
        sendLyrics(currentLyrics)
