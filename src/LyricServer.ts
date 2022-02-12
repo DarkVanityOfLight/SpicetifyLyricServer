@@ -61,7 +61,13 @@ async function getCurrentTrackLyrics(){
     return fetchLyrics(id);
 }
 
-async function sendLyrics(lyrics: LyricLine[] | null){
+async function sendLyrics(lyrics: LyricLine[] | null, sockets: Map<string, any>){
+    const serializedLyrics = JSON.stringify({"lyrics": lyrics})
+    for (let [_, socket] of sockets){
+        socket.emit("lyrics", serializedLyrics)
+    }
+
+}
 
 function initSockets(){
     for (let recvr of recievers){
@@ -80,7 +86,7 @@ async function Main(){
 
     Spicetify.Player.addEventListener("songchange", async () => {
        const currentLyrics = await getCurrentTrackLyrics();
-       sendLyrics(currentLyrics)
+       sendLyrics(currentLyrics, sockets)
     });
 }
 Main();
