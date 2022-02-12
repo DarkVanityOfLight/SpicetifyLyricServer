@@ -8,6 +8,7 @@ type LyricLine = {
 }
 
 const recievers: string[] = ["localhost:5000"]
+const sockets: Map<string, any> = new Map()
 
 function importSocketIo(){
 
