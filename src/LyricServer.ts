@@ -53,7 +53,7 @@ async function fetchLyrics(id: string){
 
 }
 
-async function getCurrentTrackLyrics(){
+function getCurrentTrackLyrics(){
     const id = getCurrentTrackId();
     if (id == null){
         return null
@@ -61,7 +61,7 @@ async function getCurrentTrackLyrics(){
     return fetchLyrics(id);
 }
 
-async function sendLyricsToAll(lyrics: LyricLine[] | null, sockets: Map<string, any>){
+function sendLyricsToAll(lyrics: LyricLine[] | null, sockets: Map<string, any>){
     const serializedLyrics = JSON.stringify({"lyrics": lyrics})
     for (let [_, socket] of sockets){
         socket.emit("lyrics", serializedLyrics)
