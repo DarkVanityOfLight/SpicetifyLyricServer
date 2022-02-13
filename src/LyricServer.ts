@@ -95,6 +95,22 @@ async function initSockets(){
     }
 }
 
+async function addClient(address: string){
+    
+    if(!recievers.includes(address)){
+        recievers.push(address)
+    }
+
+    if(!sockets.has(address)){
+        const sock = openConnection(address)
+        const lyrics = await getCurrentTrackLyrics()
+        sockets.set(address, sock)
+        sendLyricsToOne(lyrics, sock)
+    }
+
+
+}
+
 async function Main(){
 
     await importSocketIo();
