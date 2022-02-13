@@ -91,7 +91,7 @@ async function initSockets(){
             const sock = openConnection(recvr);
             sockets.set(recvr, sock)
         }
-        sendLyricstoOne(currentLyrics, sockets.get(recvr));
+        sendLyricsToOne(currentLyrics, sockets.get(recvr));
     }
 }
 
