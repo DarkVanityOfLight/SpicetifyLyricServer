@@ -69,6 +69,12 @@ async function sendLyrics(lyrics: LyricLine[] | null, sockets: Map<string, any>)
 
 }
 
+function sendTimeToAll(time: number, sockets: Map<string, any>){
+    for (let [_, socket] of sockets){
+        socket.emit("time", time)
+    }
+}
+
 function initSockets(){
     for (let recvr of recievers){
         if (!sockets.has(recvr)){
@@ -87,6 +93,10 @@ async function Main(){
     Spicetify.Player.addEventListener("songchange", async () => {
        const currentLyrics = await getCurrentTrackLyrics();
        sendLyrics(currentLyrics, sockets)
+    });
+
+    Spicetify.Player.addEventListener("onprogress", event => {
+        sendTimeToAll(event!!.data, sockets)
     });
 }
 Main();
