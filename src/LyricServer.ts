@@ -69,18 +69,29 @@ function sendLyricsToAll(lyrics: LyricLine[] | null, sockets: Map<string, any>){
 
 }
 
+function sendLyricsToOne(lyrics: LyricLine[] | null, socket: any){
+    const serializedLyrics = JSON.stringify({"lyrics": lyrics})
+    socket.emit("lyrics", serializedLyrics)
+}
+
 function sendTimeToAll(time: number, sockets: Map<string, any>){
     for (let [_, socket] of sockets){
         socket.emit("time", time)
     }
 }
 
-function initSockets(){
+function sendTimeToOne(time: number, socket: any){
+    socket.emit("time", time)
+}
+
+async function initSockets(){
+    const currentLyrics = await getCurrentTrackLyrics()
     for (let recvr of recievers){
         if (!sockets.has(recvr)){
             const sock = openConnection(recvr);
             sockets.set(recvr, sock)
         }
+        sendLyricstoOne(currentLyrics, sockets.get(recvr));
     }
 }
 
