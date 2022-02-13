@@ -23,6 +23,7 @@ function importSocketIo(){
 }
 
 function openConnection(address: string){
+    // @ts-ignore
     const socket = io("ws://" + address)
     return socket
 }
