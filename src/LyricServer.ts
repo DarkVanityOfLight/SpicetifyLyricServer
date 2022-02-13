@@ -30,7 +30,7 @@ function openConnection(address: string){
 
 function getCurrentTrackId(){
 
-    if(Spicetify.Player.data.track == undefined){
+    if(Spicetify.Player.data?.track == undefined){
         return null
     }
     const trackURI = Spicetify.Player.data.track.uri
