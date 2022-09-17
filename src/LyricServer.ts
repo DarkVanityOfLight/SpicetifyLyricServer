@@ -43,7 +43,7 @@ function getTrackId(trackURI: string){
 
 async function fetchLyrics(id: string){
 
-    const baseURL = "hm://lyrics/v1/track/";
+    const baseURL = "https://spclient.wg.spotify.com/lyrics/v1/track/";
     try{
         const resp = await Spicetify!!.CosmosAsync.get(baseURL + id);
         const lyrics: LyricLine[] = resp.lines
