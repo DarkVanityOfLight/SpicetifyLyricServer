@@ -1,3 +1,7 @@
+# The End
+This project used socketio which I m not really a fan of rightnow, it also had its quirks and flaws so I rewrote it, check it out at [lyric-server](https://github.com/DarkVanityOfLight/lyric-server)
+
+
 # SpicetifyLyricServer
 Compile with:  
 ```yarn run tsc```
